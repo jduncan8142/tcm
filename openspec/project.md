@@ -144,12 +144,48 @@ tcm/
 └── pyproject.toml        # Project dependencies
 ```
 
+### API Implementation (Completed)
+
+**Pydantic Schemas:**
+- Tag, TestCase, and Project schemas for request/response validation
+- Separate Create, Update, and Response schemas for each entity
+- List response schemas with pagination support
+
+**REST API Endpoints:**
+
+All endpoints follow RESTful conventions and are prefixed with `/api`:
+
+- **Tag Endpoints** (`/api/tags`):
+  - Full CRUD operations
+  - List with pagination and category filtering
+  - Get unique tag categories
+  - Duplicate detection on create/update
+
+- **TestCase Endpoints** (`/api/testcases`):
+  - Full CRUD operations
+  - List with filtering by status, priority, and tag
+  - Tag management (add/remove tags)
+  - Eager loading of tag relationships
+
+- **Project Endpoints** (`/api/projects`):
+  - Full CRUD operations
+  - List with status filtering
+  - Test case management (add/remove test cases)
+  - Get all test cases in a project
+
+**Features:**
+- Async SQLAlchemy with relationship loading
+- Input validation with Pydantic
+- Error handling (404, 400 status codes)
+- Pagination support
+- Auto-generated API documentation at `/docs`
+
 ### What's Next
-- **API Endpoints**: Implement CRUD operations for Tags, TestCases, Projects
 - **FastHTML UI**: Build web interface for test case management
 - **Authentication**: Add user authentication and authorization
-- **Search & Filtering**: Implement advanced filtering by tags and metadata
+- **Search & Filtering**: Implement advanced search and filtering UI
 - **Testing**: Add unit, integration, and e2e tests
+- **Bulk Operations**: Add endpoints for bulk create/update/delete
 
 ## Important Constraints
 - Multi-tenant data access patterns must ensure proper isolation

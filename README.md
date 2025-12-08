@@ -53,6 +53,7 @@ Once the Docker stack is running, you can access:
 - **TCM Application**: http://localhost:8000
   - API Health Check: http://localhost:8000/health
   - API Documentation: http://localhost:8000/docs (FastAPI auto-generated)
+  - API Base URL: http://localhost:8000/api
 
 - **pgAdmin**: http://localhost:5050
   - Email: `admin@example.com`
@@ -63,6 +64,39 @@ Once the Docker stack is running, you can access:
     - Database: `tcm`
     - Username: `tcm`
     - Password: `tcm`
+
+### API Endpoints
+
+The API provides full CRUD operations for Tags, Test Cases, and Projects.
+
+**Tags:**
+- `GET /api/tags` - List all tags with pagination and filtering
+- `GET /api/tags/categories` - Get unique tag categories
+- `GET /api/tags/{id}` - Get specific tag
+- `POST /api/tags` - Create new tag
+- `PATCH /api/tags/{id}` - Update tag
+- `DELETE /api/tags/{id}` - Delete tag
+
+**Test Cases:**
+- `GET /api/testcases` - List all test cases with filtering
+- `GET /api/testcases/{id}` - Get specific test case
+- `POST /api/testcases` - Create new test case
+- `PATCH /api/testcases/{id}` - Update test case
+- `DELETE /api/testcases/{id}` - Delete test case
+- `POST /api/testcases/{id}/tags/{tag_id}` - Add tag to test case
+- `DELETE /api/testcases/{id}/tags/{tag_id}` - Remove tag from test case
+
+**Projects:**
+- `GET /api/projects` - List all projects
+- `GET /api/projects/{id}` - Get specific project
+- `POST /api/projects` - Create new project
+- `PATCH /api/projects/{id}` - Update project
+- `DELETE /api/projects/{id}` - Delete project
+- `GET /api/projects/{id}/testcases` - Get test cases in project
+- `POST /api/projects/{id}/testcases/{testcase_id}` - Add test case to project
+- `DELETE /api/projects/{id}/testcases/{testcase_id}` - Remove test case from project
+
+For detailed API documentation and interactive testing, visit http://localhost:8000/docs
 
 ### Development Workflow
 
