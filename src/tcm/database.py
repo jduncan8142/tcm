@@ -50,3 +50,7 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
             raise
         finally:
             await session.close()
+
+
+# Alias for convenience
+get_async_session = get_db

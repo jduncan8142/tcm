@@ -8,12 +8,18 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
 from tcm.config import settings
+from tcm.routes import tags, testcases, projects
 
 app = FastAPI(
     title="Test Case Management",
     description="Web application for test case creation and tracking",
     version="0.1.0",
 )
+
+# Include API routers
+app.include_router(tags.router, prefix="/api")
+app.include_router(testcases.router, prefix="/api")
+app.include_router(projects.router, prefix="/api")
 
 
 @app.get("/")
