@@ -99,6 +99,49 @@ docker-compose down
 docker-compose down -v
 ```
 
+### Database Migrations
+
+The project uses Alembic for database schema management. Migrations are configured to work with async SQLAlchemy.
+
+```bash
+# Check current migration version
+uv run alembic current
+
+# Apply all pending migrations
+uv run alembic upgrade head
+
+# Create a new migration (after modifying models)
+uv run alembic revision --autogenerate -m "Description of changes"
+
+# Rollback one migration
+uv run alembic downgrade -1
+
+# View migration history
+uv run alembic history
+
+# Rollback to specific version
+uv run alembic downgrade <revision_id>
+```
+
+**Note:** Migrations are automatically applied when running inside Docker. For local development, you'll need to run migrations manually using `uv run alembic upgrade head`.
+
+### Seeding Data
+
+The project includes seed scripts to populate the database with predefined data.
+
+**Seed Predefined Tags:**
+
+```bash
+# Seed all 40 predefined tag categories with example values
+uv run python scripts/seed_tags.py
+
+# Clear all tags and re-seed
+uv run python scripts/seed_tags.py --clear
+uv run python scripts/seed_tags.py
+```
+
+The seed script creates 182 predefined tags across 40 categories (organizational, system/technical, test-specific, platform/technology, project management, compliance/security, localization/regional, and integration/dependency).
+
 ## Default tags:
 
 ### Organizational

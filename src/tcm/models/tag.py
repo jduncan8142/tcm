@@ -7,9 +7,13 @@ Tags are used to categorize and filter test cases across various dimensions.
 from datetime import datetime
 
 from sqlalchemy import String, DateTime, func
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from typing import TYPE_CHECKING
 
 from tcm.database import Base
+
+if TYPE_CHECKING:
+    from tcm.models.testcase import TestCase
 
 
 class Tag(Base):
@@ -35,6 +39,11 @@ class Tag(Base):
         server_default=func.now(),
         onupdate=func.now(),
         nullable=False,
+    )
+
+    # Relationships
+    testcases: Mapped[list["TestCase"]] = relationship(
+        secondary="testcase_tags", back_populates="tags", lazy="selectin"
     )
 
     def __repr__(self) -> str:
