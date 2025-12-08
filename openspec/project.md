@@ -15,6 +15,7 @@ The goal is to provide a centralized platform for managing test cases across mul
 - **Backend**: Python with FastAPI
 - **Frontend**: Python with FastHTML
 - **Database**: PostgreSQL
+- **Package Manager**: uv (fast Python package manager)
 - **Deployment**: (To be determined)
 
 ## Project Conventions
@@ -25,6 +26,12 @@ The goal is to provide a centralized platform for managing test cases across mul
 - Use clear, descriptive variable and function names
 - Prefer readability over cleverness
 - Add docstrings for public functions and classes
+
+### Dependency Management
+- Use `uv` for all Python package management
+- Maintain `pyproject.toml` for project dependencies
+- Use `uv sync` to install dependencies
+- Lock dependencies with `uv.lock` for reproducible builds
 
 ### Architecture Patterns
 - RESTful API design with FastAPI for backend endpoints
@@ -67,14 +74,42 @@ The goal is to provide a centralized platform for managing test cases across mul
 - Hierarchical organization of metadata (e.g., org → unit → system → process)
 - Audit trail for test case modifications
 
+### Predefined Metadata Tags
+The system provides 40 predefined tag categories organized into logical groups. Custom tags can also be added as needed.
+
+**Organizational** (7 tags):
+- organization, business_unit, customer, vendor, program, squad, owner
+
+**System/Technical** (7 tags):
+- system, process, module, server, cloud_provider, database, protocol
+
+**Test-Specific** (8 tags):
+- test_type, test_level, automation_status, priority, risk_level, test_phase, test_status, maintenance_status
+
+**Platform/Technology** (4 tags):
+- platform, browser, os, device_type
+
+**Project Management** (4 tags):
+- release, sprint, epic, feature
+
+**Compliance/Security** (3 tags):
+- data_classification, compliance_requirement, security_level
+
+**Localization/Regional** (4 tags):
+- region, language, locale, timezone
+
+**Integration/Dependency** (3 tags):
+- integration_point, api_version, dependency
+
 ## Important Constraints
 - Multi-tenant data access patterns must ensure proper isolation
 - Search and filtering performance critical for large test case repositories
 - Metadata taxonomy should be flexible and extensible
 
 ## External Dependencies
-- PostgreSQL database server
-- Python package dependencies:
+- **Package Manager**: uv (must be installed globally)
+- **Database**: PostgreSQL database server
+- **Python Packages** (managed via uv):
   - FastAPI (async web framework)
   - FastHTML (Python-based frontend framework)
   - SQLAlchemy (ORM)
