@@ -182,7 +182,7 @@ def EditTestCasePage(
                 ),
                 cls="form-card form-card-wide",
             ),
-            cls="container",
+            cls="container container-wide",
         ),
         title="Edit Test Case - Test Case Management",
     )
