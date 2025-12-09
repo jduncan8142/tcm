@@ -98,3 +98,4 @@ dmypy.json
 # Docker
 docker-compose.override.yml
 .docker/
+.claude/settings.local.json
