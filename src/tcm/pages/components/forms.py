@@ -356,3 +356,173 @@ def CategoryGroup(
         cls="category-group",
         open=not collapsed,
     )
+
+
+def TagPickerField(
+    name: str,
+    label: str,
+    available_tags: list[dict],
+    selected_tag_ids: list[int] = None,
+):
+    """
+    Enhanced tag picker field with autocomplete, pills, and browse modal.
+
+    Args:
+        name: Field name attribute
+        label: Label text for the field
+        available_tags: List of available tag dictionaries
+        selected_tag_ids: List of selected tag IDs
+
+    Returns:
+        FastHTML div containing enhanced tag picker
+    """
+    selected_tag_ids = selected_tag_ids or []
+
+    # Get selected tags
+    selected_tags = [tag for tag in available_tags if tag["id"] in selected_tag_ids]
+
+    # Group tags by category for the browse modal
+    tags_by_category = {}
+    for tag in available_tags:
+        cat = tag["category"]
+        if cat not in tags_by_category:
+            tags_by_category[cat] = []
+        tags_by_category[cat].append(tag)
+
+    # Create JSON data for JavaScript
+    tags_json = str(available_tags).replace("'", '"')
+    selected_ids_json = str(selected_tag_ids)
+
+    return Div(
+        Label(label, fr=name, cls="form-label"),
+
+        # Container for tag pills and input
+        Div(
+            # Selected tag pills
+            Div(
+                *[
+                    Span(
+                        tag["value"],
+                        Button(
+                            "×",
+                            type="button",
+                            cls="tag-pill-remove",
+                            onclick=f"removeTag('{name}', {tag['id']})",
+                        ),
+                        cls="tag-pill",
+                        data_tag_id=str(tag["id"]),
+                    )
+                    for tag in selected_tags
+                ],
+                cls="tag-pills-container",
+                id=f"{name}_pills",
+            ),
+
+            # Input with autocomplete
+            Div(
+                Input(
+                    type="text",
+                    id=f"{name}_input",
+                    placeholder="Type to search tags...",
+                    cls="tag-picker-input",
+                    autocomplete="off",
+                    onkeyup=f"filterTags('{name}')",
+                ),
+                Button(
+                    "Browse",
+                    type="button",
+                    cls="btn btn-secondary btn-small tag-picker-browse",
+                    onclick=f"openTagBrowser('{name}')",
+                ),
+                cls="tag-picker-input-container",
+            ),
+
+            # Autocomplete dropdown
+            Div(
+                cls="tag-autocomplete-dropdown",
+                id=f"{name}_dropdown",
+                style="display: none;",
+            ),
+
+            cls="tag-picker-container",
+        ),
+
+        # Hidden inputs for form submission
+        *[
+            Input(
+                type="hidden",
+                name=name,
+                value=str(tag_id),
+                data_tag_input=name,
+            )
+            for tag_id in selected_tag_ids
+        ],
+
+        # Browse modal
+        Div(
+            Div(
+                Div(
+                    H3("Select Tags", cls="modal-title"),
+                    Button(
+                        "×",
+                        type="button",
+                        cls="modal-close",
+                        onclick=f"closeTagBrowser('{name}')",
+                    ),
+                    cls="modal-header",
+                ),
+                Div(
+                    *[
+                        Details(
+                            Summary(
+                                category.replace("_", " ").title(),
+                                cls="category-summary",
+                            ),
+                            Div(
+                                *[
+                                    Label(
+                                        Input(
+                                            type="checkbox",
+                                            value=str(tag["id"]),
+                                            checked=tag["id"] in selected_tag_ids,
+                                            onchange=f"toggleTagInModal('{name}', {tag['id']})",
+                                        ),
+                                        Span(tag["value"]),
+                                        cls="tag-option-label",
+                                    )
+                                    for tag in tags_by_category[category]
+                                ],
+                                cls="category-tags",
+                            ),
+                            cls="category-group-modal",
+                            open=True,
+                        )
+                        for category in sorted(tags_by_category.keys())
+                    ],
+                    cls="modal-body",
+                ),
+                Div(
+                    Button(
+                        "Done",
+                        type="button",
+                        cls="btn btn-primary",
+                        onclick=f"closeTagBrowser('{name}')",
+                    ),
+                    cls="modal-footer",
+                ),
+                cls="modal-content",
+            ),
+            cls="tag-browser-modal",
+            id=f"{name}_modal",
+            style="display: none;",
+            onclick=f"closeModalOnBackdrop(event, '{name}')",
+        ),
+
+        # JavaScript data
+        Script(f"""
+            window.tagPickerData = window.tagPickerData || {{}};
+            window.tagPickerData['{name}'] = {tags_json};
+        """),
+
+        cls="form-group tag-picker-field",
+    )

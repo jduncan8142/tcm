@@ -14,6 +14,7 @@ from tcm.pages.components.forms import (
     TagBadge,
     ActionButton,
     CategoryGroup,
+    TagPickerField,
 )
 
 __all__ = [
@@ -28,4 +29,5 @@ __all__ = [
     "TagBadge",
     "ActionButton",
     "CategoryGroup",
+    "TagPickerField",
 ]

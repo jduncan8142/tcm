@@ -29,6 +29,7 @@ def PageLayout(
             Meta(charset="utf-8"),
             Meta(name="viewport", content="width=device-width, initial-scale=1"),
             Link(rel="stylesheet", href="/static/css/styles.css"),
+            Script(src="/static/js/tag-picker.js", defer=True),
         ),
         Body(
             Div(

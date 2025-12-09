@@ -11,6 +11,7 @@ from tcm.pages.components import (
     SubmitButton,
     ActionButton,
     ErrorMessage,
+    TagPickerField,
 )
 
 
@@ -166,7 +167,7 @@ def EditTestCasePage(
                         required=True,
                         selected_value=testcase.get("priority", "medium"),
                     ),
-                    MultiSelectTagField(
+                    TagPickerField(
                         name="tag_ids",
                         label="Tags",
                         available_tags=available_tags,
