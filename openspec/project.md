@@ -128,9 +128,13 @@ The system provides 40 predefined tag categories organized into logical groups. 
 tcm/
 ├── src/tcm/              # Application code
 │   ├── models/           # SQLAlchemy models (Tag, TestCase, Project, associations)
-│   ├── routes/           # API routes (empty, ready for implementation)
-│   ├── pages/            # FastHTML pages (empty, ready for implementation)
-│   ├── schemas/          # Pydantic schemas (empty, ready for implementation)
+│   ├── routes/           # API routes (tags, testcases, projects, auth)
+│   ├── pages/            # FastHTML pages
+│   │   ├── components/   # Reusable FastHTML components (layout, forms)
+│   │   └── login.py      # Login page
+│   ├── schemas/          # Pydantic schemas (Tag, TestCase, Project)
+│   ├── static/           # Static assets
+│   │   └── css/          # Stylesheets
 │   ├── config.py         # Application configuration
 │   ├── database.py       # Database connection setup
 │   └── main.py           # FastAPI application entry point
@@ -140,6 +144,7 @@ tcm/
 ├── scripts/              # Utility scripts
 │   └── seed_tags.py      # Tag seeding script
 ├── tests/                # Test suite (unit, integration, e2e)
+│   └── integration/      # Integration tests (auth, tags, testcases, projects)
 ├── docker-compose.yml    # Docker stack (app, postgres, pgadmin)
 └── pyproject.toml        # Project dependencies
 ```
@@ -188,7 +193,7 @@ All endpoints follow RESTful conventions and are prefixed with `/api`:
 - File-based SQLite for test isolation
 - Comprehensive test coverage for all API endpoints
 
-**Integration Tests (52 tests):**
+**Integration Tests (62 tests):**
 
 - **Tag API Tests** (13 tests):
   - CRUD operations
@@ -208,18 +213,56 @@ All endpoints follow RESTful conventions and are prefixed with `/api`:
   - Status filtering
   - Relationship management
 
+- **Authentication Tests** (10 tests):
+  - Login page rendering
+  - Valid/invalid credentials
+  - Session management
+  - Logout functionality
+  - Cookie security properties
+
 **Test Commands:**
 - `uv run pytest` - Run all tests
 - `uv run pytest tests/integration/` - Run integration tests
 - `uv run pytest --cov=tcm` - Run with coverage report
 
+### Authentication Implementation (Completed)
+
+**Login Page & UI Components:**
+- FastHTML-based login page with form validation
+- Reusable UI components (PageLayout, InputField, SubmitButton, ErrorMessage)
+- Responsive CSS styling with mobile-first design
+- Dashboard placeholder page (post-login)
+
+**Authentication Routes:**
+- `GET /login` - Render login page
+- `POST /api/auth/login` - Handle login submission with validation
+- `GET /api/auth/logout` - Clear session and redirect
+- `GET /dashboard` - Protected dashboard page
+
+**Security Features:**
+- Session-based authentication with HTTP-only cookies
+- Failed login logging with timestamp, IP, username, and user agent
+- Log injection prevention (username sanitization)
+- Configurable session timeout via environment variables
+- SameSite cookie protection
+- Placeholder user database (admin/test users for development)
+
+**Configuration:**
+- `SESSION_SECRET` - Secret key for session signing
+- `SESSION_TIMEOUT` - Session timeout in seconds (default: 3600)
+- `LOG_FAILED_LOGINS` - Enable/disable failed login logging (default: true)
+
+**Future Integration:**
+- Azure AD / Entra ID SSO (planned)
+- Current implementation serves as interim authentication solution
+
 ### What's Next
 - **FastHTML UI**: Build web interface for test case management
-- **Authentication**: Add user authentication and authorization
 - **Search & Filtering**: Implement advanced search and filtering UI
 - **Unit Tests**: Add unit tests for models and business logic
 - **E2E Tests**: Add end-to-end tests for critical user workflows
 - **Bulk Operations**: Add endpoints for bulk create/update/delete
+- **Azure AD Integration**: Replace placeholder auth with SSO
 
 ## Important Constraints
 - Multi-tenant data access patterns must ensure proper isolation

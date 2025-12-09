@@ -23,6 +23,11 @@ class Settings(BaseSettings):
     # Security settings
     secret_key: str = "change-me-in-production"
 
+    # Authentication & Session settings
+    session_secret: str = "change-me-in-production-use-a-different-secret"
+    session_timeout: int = 3600  # Session timeout in seconds (default: 1 hour)
+    log_failed_logins: bool = True  # Enable logging of failed login attempts
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",

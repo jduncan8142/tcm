@@ -27,6 +27,10 @@ While custom meta data tags can be added as required, there are several predefin
    cp .env.example .env
 
    # Edit .env if you need to customize settings (optional for development)
+   # Important settings for authentication:
+   #   SESSION_SECRET - Secret key for session signing (change in production)
+   #   SESSION_TIMEOUT - Session timeout in seconds (default: 3600)
+   #   LOG_FAILED_LOGINS - Enable logging of failed login attempts (default: true)
    ```
 
 3. **Start the Docker stack**
@@ -51,6 +55,8 @@ While custom meta data tags can be added as required, there are several predefin
 Once the Docker stack is running, you can access:
 
 - **TCM Application**: http://localhost:8000
+  - Login Page: http://localhost:8000/login
+  - Dashboard: http://localhost:8000/dashboard (requires login)
   - API Health Check: http://localhost:8000/health
   - API Documentation: http://localhost:8000/docs (FastAPI auto-generated)
   - API Base URL: http://localhost:8000/api
@@ -64,6 +70,29 @@ Once the Docker stack is running, you can access:
     - Database: `tcm`
     - Username: `tcm`
     - Password: `tcm`
+
+### Authentication
+
+The application includes a login page for user authentication.
+
+**Default Test Users:**
+- Username: `admin`, Password: `admin123`
+- Username: `test`, Password: `test123`
+
+**Authentication Routes:**
+- `GET /login` - Login page
+- `POST /api/auth/login` - Handle login form submission
+- `GET /api/auth/logout` - Logout and clear session
+- `GET /dashboard` - Dashboard (post-login placeholder)
+
+**Security Features:**
+- Session-based authentication with HTTP-only cookies
+- Failed login attempt logging (configurable via `LOG_FAILED_LOGINS`)
+- Configurable session timeout (default: 1 hour)
+- Log injection prevention with username sanitization
+- SameSite cookie protection
+
+**Note:** The current authentication is a placeholder implementation. The end goal is to integrate with Azure AD/Entra ID for Single Sign-On (SSO).
 
 ### API Endpoints
 
@@ -210,10 +239,11 @@ uv run pytest tests/integration/test_tags_api.py::TestTagsAPI::test_create_tag
 ```
 
 **Test Coverage:**
-- **52 integration tests** covering all CRUD operations
+- **62 integration tests** covering all CRUD operations
 - Tag API (13 tests): Create, Read, Update, Delete, Categories, Filtering
 - TestCase API (20 tests): CRUD, Tag management, Filtering
 - Project API (20 tests): CRUD, Test case management, Filtering
+- Authentication (10 tests): Login page, Valid/invalid credentials, Logout, Session cookies
 
 ## Default tags:
 
