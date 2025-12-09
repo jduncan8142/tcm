@@ -357,6 +357,23 @@ class TestViewProjectPage:
         assert b"Back to Projects" in response.content
         assert b'href="/projects"' in response.content
 
+    async def test_view_project_testcase_titles_are_links(
+        self, test_client: AsyncClient, sample_projects, sample_testcases
+    ):
+        """Test that test case titles are clickable links to test case details."""
+        project = sample_projects[0]
+        testcase = sample_testcases[0]
+
+        # Add test case to project via API
+        await test_client.post(f"/api/projects/{project.id}/testcases/{testcase.id}")
+
+        response = await test_client.get(f"/projects/{project.id}")
+        assert response.status_code == 200
+        # Check that the title appears as a link
+        assert f'href="/testcases/{testcase.id}"'.encode() in response.content
+        assert testcase.title.encode() in response.content
+        assert b'class="testcase-link"' in response.content
+
 
 @pytest.mark.asyncio
 class TestDeleteProject:

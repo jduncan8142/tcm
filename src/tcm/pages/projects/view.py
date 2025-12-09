@@ -28,7 +28,7 @@ def TestCaseRow(testcase: dict, project_id: int):
     priority = testcase.get("priority", "medium")
 
     return Tr(
-        Td(testcase.get("title", "")),
+        Td(A(testcase.get("title", ""), href=f"/testcases/{testcase['id']}", cls="testcase-link")),
         Td(Span(status.replace("_", " ").title(), cls=f"status-badge status-{status}")),
         Td(Span(priority.title(), cls=f"priority-badge priority-{priority}")),
         Td(
