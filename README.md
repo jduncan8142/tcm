@@ -176,6 +176,45 @@ uv run python scripts/seed_tags.py
 
 The seed script creates 182 predefined tags across 40 categories (organizational, system/technical, test-specific, platform/technology, project management, compliance/security, localization/regional, and integration/dependency).
 
+### Running Tests
+
+The project includes comprehensive integration tests for all API endpoints.
+
+**Install Development Dependencies:**
+
+```bash
+# Install dev dependencies including pytest and testing libraries
+uv sync --all-extras
+```
+
+**Run Tests:**
+
+```bash
+# Run all tests
+uv run pytest
+
+# Run only integration tests
+uv run pytest tests/integration/
+
+# Run tests with verbose output
+uv run pytest -v
+
+# Run tests with coverage report
+uv run pytest --cov=tcm --cov-report=html
+
+# Run specific test file
+uv run pytest tests/integration/test_tags_api.py
+
+# Run specific test
+uv run pytest tests/integration/test_tags_api.py::TestTagsAPI::test_create_tag
+```
+
+**Test Coverage:**
+- **52 integration tests** covering all CRUD operations
+- Tag API (13 tests): Create, Read, Update, Delete, Categories, Filtering
+- TestCase API (20 tests): CRUD, Tag management, Filtering
+- Project API (20 tests): CRUD, Test case management, Filtering
+
 ## Default tags:
 
 ### Organizational

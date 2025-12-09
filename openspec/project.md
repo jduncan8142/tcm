@@ -180,11 +180,45 @@ All endpoints follow RESTful conventions and are prefixed with `/api`:
 - Pagination support
 - Auto-generated API documentation at `/docs`
 
+### Testing Implementation (Completed)
+
+**Test Infrastructure:**
+- pytest with async support (pytest-asyncio)
+- Test fixtures for database sessions and HTTP client
+- File-based SQLite for test isolation
+- Comprehensive test coverage for all API endpoints
+
+**Integration Tests (52 tests):**
+
+- **Tag API Tests** (13 tests):
+  - CRUD operations
+  - Duplicate detection
+  - Pagination and filtering
+  - Category listing
+
+- **TestCase API Tests** (20 tests):
+  - CRUD operations
+  - Tag associations (add/remove)
+  - Filtering by status, priority, and tags
+  - Edge cases and error handling
+
+- **Project API Tests** (20 tests):
+  - CRUD operations
+  - Test case associations (add/remove)
+  - Status filtering
+  - Relationship management
+
+**Test Commands:**
+- `uv run pytest` - Run all tests
+- `uv run pytest tests/integration/` - Run integration tests
+- `uv run pytest --cov=tcm` - Run with coverage report
+
 ### What's Next
 - **FastHTML UI**: Build web interface for test case management
 - **Authentication**: Add user authentication and authorization
 - **Search & Filtering**: Implement advanced search and filtering UI
-- **Testing**: Add unit, integration, and e2e tests
+- **Unit Tests**: Add unit tests for models and business logic
+- **E2E Tests**: Add end-to-end tests for critical user workflows
 - **Bulk Operations**: Add endpoints for bulk create/update/delete
 
 ## Important Constraints
