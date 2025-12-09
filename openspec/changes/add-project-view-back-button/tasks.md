@@ -2,21 +2,21 @@
 
 ## Implementation Tasks
 
-- [ ] 1. Add "Back to Projects" button to project view page header
+- [x] 1. Add "Back to Projects" button to project view page header
   - File: `src/tcm/pages/projects/view.py`
   - Add `ActionButton("Back to Projects", href="/projects", btn_type="secondary")` to the page actions div alongside Edit and Delete buttons
   - Match the pattern used in test case view page
 
-- [ ] 2. Add integration test for back button presence
+- [x] 2. Add integration test for back button presence
   - File: `tests/integration/test_project_pages.py`
   - Add test case to verify the back button is rendered on the project details page
   - Verify the button links to `/projects`
 
-- [ ] 3. Update spec with back navigation requirement
+- [x] 3. Update spec with back navigation requirement
   - File: `openspec/changes/add-project-view-back-button/specs/project-pages/spec.md`
   - Add scenario for back navigation to the "View Project Details Page" requirement
 
-- [ ] 4. Run tests to verify no regressions
+- [x] 4. Run tests to verify no regressions
   - Execute: `uv run pytest tests/integration/test_project_pages.py -v`
   - All existing tests should pass
   - New back button test should pass

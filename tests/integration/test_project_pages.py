@@ -349,6 +349,14 @@ class TestViewProjectPage:
         assert response.status_code == 200
         assert b"Add Test Cases" in response.content
 
+    async def test_view_project_has_back_button(self, test_client: AsyncClient, sample_projects):
+        """Test that view page includes back to projects button."""
+        project = sample_projects[0]
+        response = await test_client.get(f"/projects/{project.id}")
+        assert response.status_code == 200
+        assert b"Back to Projects" in response.content
+        assert b'href="/projects"' in response.content
+
 
 @pytest.mark.asyncio
 class TestDeleteProject:

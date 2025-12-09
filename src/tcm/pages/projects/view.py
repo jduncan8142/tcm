@@ -119,6 +119,7 @@ def ViewProjectPage(
             Div(
                 H2(project["name"], cls="page-title"),
                 Div(
+                    ActionButton("Back to Projects", href="/projects", btn_type="secondary"),
                     ActionButton("Edit", href=f"/projects/{project['id']}/edit", btn_type="secondary"),
                     ActionButton(
                         "Delete",
