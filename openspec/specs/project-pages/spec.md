@@ -77,30 +77,11 @@ The system SHALL provide an edit page at `/projects/{id}/edit` that allows users
 ### Requirement: View Project Details Page
 The system SHALL provide a details page at `/projects/{id}` that displays complete project information and allows test case management.
 
-#### Scenario: User views project details
-- **WHEN** user navigates to `/projects/{id}`
-- **THEN** all project fields are displayed (name, description, status, start_date, end_date)
-- **AND** edit and delete buttons are visible
-
-#### Scenario: User views project statistics
-- **WHEN** user views project details
-- **THEN** the total count of test cases in the project is displayed
-- **AND** the project date range is displayed
-
-#### Scenario: User views test cases in project
-- **WHEN** user views a project with associated test cases
-- **THEN** a list of test cases in the project is displayed
-- **AND** each test case shows title, status, and priority
-
-#### Scenario: Non-existent project
-- **WHEN** user navigates to `/projects/{id}` for a non-existent ID
-- **THEN** a 404 error page is displayed
-
-#### Scenario: User deletes project
-- **WHEN** user clicks the delete button
-- **THEN** a confirmation dialog is shown
-- **AND** if confirmed, the project is deleted via the API
-- **AND** user is redirected to the projects list page
+#### Scenario: User navigates to test case details from project view
+- **WHEN** user is viewing project details at `/projects/{id}`
+- **AND** the project has associated test cases displayed in the table
+- **AND** user clicks on a test case title
+- **THEN** user is navigated to the test case details page at `/testcases/{testcase_id}`
 
 ### Requirement: Test Case Assignment
 The system SHALL allow users to add and remove test cases from a project on the project details page.

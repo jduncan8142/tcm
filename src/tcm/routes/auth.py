@@ -129,36 +129,7 @@ async def post_login(
     return response
 
 
-@router.get("/dashboard", response_class=HTMLResponse)
-async def get_dashboard(request: Request):
-    """
-    Placeholder dashboard page for post-login redirect.
-
-    Returns:
-        Simple HTML page confirming login success
-    """
-    from tcm.pages.components import PageLayout
-    from fasthtml.common import Div, H2, P, A, to_xml
-
-    # TODO: Check if user is authenticated, redirect to login if not
-
-    return HTMLResponse(
-        content=to_xml(
-            PageLayout(
-                Div(
-                    Div(
-                        H2("Dashboard", cls="form-title"),
-                        P("Welcome! You are now logged in."),
-                        P("This is a placeholder dashboard page."),
-                        A("Logout", href="/api/auth/logout", cls="btn btn-primary"),
-                        cls="form-card",
-                    ),
-                    cls="container",
-                ),
-                title="Dashboard - Test Case Management",
-            )
-        )
-    )
+# Dashboard route is now handled by dashboard_pages.py
 
 
 @router.get("/api/auth/logout")

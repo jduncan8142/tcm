@@ -11,7 +11,7 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
 from tcm.config import settings
-from tcm.routes import tags, testcases, projects, auth, tag_pages, project_pages, testcase_pages
+from tcm.routes import tags, testcases, projects, auth, tag_pages, project_pages, testcase_pages, dashboard_pages, search_pages
 
 # Configure logging
 logging.basicConfig(
@@ -32,6 +32,8 @@ if static_dir.exists():
 
 # Include routers
 app.include_router(auth.router)  # Authentication routes (no prefix for /login)
+app.include_router(dashboard_pages.router)  # Dashboard page
+app.include_router(search_pages.router)  # Search page
 app.include_router(tag_pages.router)  # Tag management pages
 app.include_router(project_pages.router)  # Project management pages
 app.include_router(testcase_pages.router)  # Test case management pages

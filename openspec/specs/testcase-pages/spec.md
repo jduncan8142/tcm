@@ -34,58 +34,70 @@ The system SHALL provide a list page at `/testcases` that displays all test case
 - **AND** current page indicator is updated
 
 ### Requirement: Create Test Case Page
-The system SHALL provide a create page at `/testcases/new` that allows users to create new test cases with full form validation.
+The system SHALL provide a create page at `/testcases/new` that allows users to create new test cases with an enhanced tag picker component.
 
-#### Scenario: User creates a test case successfully
-- **WHEN** user fills all required fields (title, status, priority)
-- **AND** user clicks the submit button
-- **THEN** the test case is created via the API
-- **AND** user is redirected to the view page for the new test case
-- **AND** a success message is displayed
+#### Scenario: User searches for tags by typing
+- **WHEN** user focuses on the tag picker input field
+- **AND** user starts typing a search term
+- **THEN** an autocomplete dropdown appears showing tags matching the search term
+- **AND** matching tags are filtered from all available tags
 
-#### Scenario: User submits invalid form
-- **WHEN** user submits the form with missing required fields
-- **THEN** validation errors are displayed next to the invalid fields
-- **AND** the form is not submitted
+#### Scenario: User selects tag from autocomplete
+- **WHEN** user types in the tag picker
+- **AND** autocomplete suggestions are displayed
+- **AND** user presses Enter or clicks on a suggestion
+- **THEN** the selected tag is added as a pill/token in the input field
+- **AND** the autocomplete dropdown closes
+- **AND** the input is cleared for additional typing
 
-#### Scenario: User assigns tags during creation
-- **WHEN** user selects one or more tags from the tag selector
-- **AND** user submits the form
-- **THEN** the test case is created with the selected tags associated
+#### Scenario: User navigates autocomplete with keyboard
+- **WHEN** autocomplete suggestions are visible
+- **AND** user presses ArrowDown or ArrowUp keys
+- **THEN** the highlighted suggestion changes accordingly
+- **AND** pressing Enter selects the highlighted suggestion
 
-#### Scenario: User cancels creation
-- **WHEN** user clicks the cancel button
-- **THEN** user is redirected to the test cases list page
-- **AND** no test case is created
+#### Scenario: User removes a tag pill
+- **WHEN** user has selected tags displayed as pills
+- **AND** user clicks the × button on a tag pill
+- **THEN** the tag is removed from the selection
+- **AND** the pill is removed from the display
+
+#### Scenario: User opens tag browser popover
+- **WHEN** user clicks the search button in the tag picker
+- **THEN** a popover dialog opens displaying all available tags grouped by category
+- **AND** user can scroll through the list
+- **AND** user can Ctrl+Click to select multiple tags
+
+#### Scenario: User confirms tag selection from popover
+- **WHEN** user has selected tags in the popover dialog
+- **AND** user clicks the OK button
+- **THEN** the popover dialog closes
+- **AND** selected tags are added as pills in the tag picker input
+
+#### Scenario: User closes popover by clicking outside
+- **WHEN** the tag browser popover is open
+- **AND** user clicks outside the popover area
+- **THEN** the popover closes without adding any tags
+
+#### Scenario: Form submission with tag picker
+- **WHEN** user has selected tags using the enhanced tag picker
+- **AND** user submits the create test case form
+- **THEN** the test case is created with all selected tags associated
 
 ### Requirement: Edit Test Case Page
-The system SHALL provide an edit page at `/testcases/{id}/edit` that allows users to modify existing test cases.
+The system SHALL provide an edit page at `/testcases/{id}/edit` that allows users to modify existing test cases using the enhanced tag picker component.
 
-#### Scenario: User edits a test case successfully
-- **WHEN** user modifies test case fields
-- **AND** user clicks the save button
-- **THEN** the test case is updated via the API
-- **AND** user is redirected to the view page
-- **AND** a success message is displayed
-
-#### Scenario: Form is pre-populated with existing data
+#### Scenario: Edit page shows existing tags as pills
 - **WHEN** user navigates to `/testcases/{id}/edit`
-- **THEN** all form fields are pre-populated with the current test case data
-- **AND** currently assigned tags are shown as selected
+- **AND** the test case has associated tags
+- **THEN** the tag picker displays existing tags as pills/tokens
+- **AND** user can remove existing tags or add new ones
 
-#### Scenario: User manages tags
-- **WHEN** user adds or removes tags using the tag selector
+#### Scenario: User modifies tags on edit page
+- **WHEN** user is on the edit page
+- **AND** user adds or removes tags using the tag picker
 - **AND** user saves the form
-- **THEN** the test case tag associations are updated
-
-#### Scenario: Non-existent test case
-- **WHEN** user navigates to `/testcases/{id}/edit` for a non-existent ID
-- **THEN** a 404 error page is displayed
-
-#### Scenario: User cancels edit
-- **WHEN** user clicks the cancel button
-- **THEN** user is redirected to the view page
-- **AND** no changes are saved
+- **THEN** the test case tag associations are updated to match the final selection
 
 ### Requirement: View Test Case Details Page
 The system SHALL provide a details page at `/testcases/{id}` that displays complete test case information in read-only format.
