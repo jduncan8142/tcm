@@ -57,7 +57,8 @@ class TestAuthRoutes:
         response = await test_client.get("/dashboard")
         assert response.status_code == 200
         assert b"Dashboard" in response.content
-        assert b"Welcome" in response.content
+        # Check for dashboard components (statistics, activity, quick actions)
+        assert b"Test Cases" in response.content or b"Quick Actions" in response.content
 
     async def test_logout(self, test_client: AsyncClient):
         """Test logout functionality."""
