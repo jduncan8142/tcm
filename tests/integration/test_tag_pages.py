@@ -258,14 +258,13 @@ class TestEditTagPage:
 
     async def test_edit_tag_preserves_same_values(self, test_client: AsyncClient, sample_tags):
         """Test that editing with same values works."""
-        tag = sample_tags[0]
+        tag = sample_tags[3]  # Use custom tag (not predefined)
         response = await test_client.post(
             f"/tags/{tag.id}/edit",
             data={
                 "category": tag.category,
                 "value": tag.value,
                 "description": tag.description or "",
-                "is_predefined": "on" if tag.is_predefined else "",
             },
             follow_redirects=False,
         )

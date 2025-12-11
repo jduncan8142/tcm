@@ -207,3 +207,29 @@ class TestDashboardPage:
         # Check for tags in activity
         assert b"unit" in response.content
         assert b"high" in response.content
+
+    async def test_dashboard_statistics_widgets_are_clickable(self, test_client: AsyncClient):
+        """Test that statistics widgets have navigation links."""
+        response = await test_client.get("/dashboard")
+        assert response.status_code == 200
+
+        content = response.content.decode()
+
+        # Check that Test Cases widget links to /testcases
+        assert 'href="/testcases"' in content
+
+        # Check that Projects widget links to /projects
+        assert 'href="/projects"' in content
+
+        # Check that Tags widget links to /tags
+        assert 'href="/tags"' in content
+
+    async def test_dashboard_statistics_widgets_have_link_wrapper(self, test_client: AsyncClient):
+        """Test that clickable statistics widgets have the stat-widget-link class."""
+        response = await test_client.get("/dashboard")
+        assert response.status_code == 200
+
+        content = response.content.decode()
+
+        # Check that the link wrapper class is present
+        assert 'class="stat-widget-link"' in content

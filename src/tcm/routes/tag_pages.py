@@ -114,7 +114,6 @@ async def create_tag_submit(
     category: Annotated[str, Form()],
     value: Annotated[str, Form()],
     description: Annotated[str, Form()] = "",
-    is_predefined: Annotated[str | None, Form()] = None,
     session: AsyncSession = Depends(get_async_session),
 ):
     """
@@ -125,7 +124,6 @@ async def create_tag_submit(
         category: Tag category
         value: Tag value
         description: Tag description (optional)
-        is_predefined: Whether tag is predefined (checkbox value)
         session: Database session
     """
     from fasthtml.common import to_xml
@@ -142,7 +140,6 @@ async def create_tag_submit(
                         "category": category,
                         "value": value,
                         "description": description,
-                        "is_predefined": is_predefined == "on",
                     },
                 )
             )
@@ -165,7 +162,6 @@ async def create_tag_submit(
                         "category": category,
                         "value": value,
                         "description": description,
-                        "is_predefined": is_predefined == "on",
                     },
                 )
             )
@@ -176,7 +172,7 @@ async def create_tag_submit(
         category=category,
         value=value,
         description=description if description else None,
-        is_predefined=is_predefined == "on",
+        is_predefined=False,
     )
     session.add(tag)
     await session.commit()
@@ -238,7 +234,6 @@ async def edit_tag_submit(
     category: Annotated[str, Form()],
     value: Annotated[str, Form()],
     description: Annotated[str, Form()] = "",
-    is_predefined: Annotated[str | None, Form()] = None,
     session: AsyncSession = Depends(get_async_session),
 ):
     """
@@ -250,7 +245,6 @@ async def edit_tag_submit(
         category: Tag category
         value: Tag value
         description: Tag description (optional)
-        is_predefined: Whether tag is predefined (checkbox value)
         session: Database session
     """
     from fasthtml.common import to_xml
@@ -266,6 +260,14 @@ async def edit_tag_submit(
             status_code=404,
         )
 
+    # Check if tag is predefined (cannot be edited)
+    if tag.is_predefined:
+        from fastapi.responses import JSONResponse
+        return JSONResponse(
+            status_code=403,
+            content={"detail": "Predefined tags cannot be modified"}
+        )
+
     # Validate required fields
     if not category or not value:
         categories = await get_all_categories(session)
@@ -274,7 +276,6 @@ async def edit_tag_submit(
             "category": category,
             "value": value,
             "description": description,
-            "is_predefined": is_predefined == "on",
         }
         return HTMLResponse(
             content=to_xml(
@@ -300,7 +301,6 @@ async def edit_tag_submit(
             "category": category,
             "value": value,
             "description": description,
-            "is_predefined": is_predefined == "on",
         }
         return HTMLResponse(
             content=to_xml(
@@ -316,7 +316,6 @@ async def edit_tag_submit(
     tag.category = category
     tag.value = value
     tag.description = description if description else None
-    tag.is_predefined = is_predefined == "on"
 
     await session.commit()
 

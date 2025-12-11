@@ -14,7 +14,7 @@ class TagBase(BaseModel):
     category: str = Field(..., max_length=50, description="Tag category (e.g., organization, system)")
     value: str = Field(..., max_length=100, description="Tag value")
     description: str | None = Field(None, max_length=500, description="Optional tag description")
-    is_predefined: bool = Field(True, description="Whether this is a predefined tag")
+    is_predefined: bool = Field(False, description="Whether this is a predefined tag")
 
 
 class TagCreate(TagBase):

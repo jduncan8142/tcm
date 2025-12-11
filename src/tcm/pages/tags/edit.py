@@ -8,7 +8,6 @@ from tcm.pages.components import (
     InputField,
     SelectField,
     TextAreaField,
-    CheckboxField,
     SubmitButton,
     ActionButton,
     ErrorMessage,
@@ -62,11 +61,6 @@ def EditTagPage(
                         placeholder="Enter tag description (optional)",
                         value=tag.get("description", "") or "",
                         rows=3,
-                    ),
-                    CheckboxField(
-                        name="is_predefined",
-                        label="Mark as predefined tag",
-                        checked=tag.get("is_predefined", False),
                     ),
                     Div(
                         SubmitButton("Save Changes"),

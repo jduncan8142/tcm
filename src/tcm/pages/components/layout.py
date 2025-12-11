@@ -35,7 +35,9 @@ def PageLayout(
             Div(
                 (
                     Header(
-                        H1("Test Case Management"),
+                        H1(
+                            A("Test Case Management", href="/dashboard", cls="header-title-link")
+                        ),
                         cls="page-header",
                     )
                     if show_header

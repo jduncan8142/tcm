@@ -8,7 +8,6 @@ from tcm.pages.components import (
     InputField,
     SelectField,
     TextAreaField,
-    CheckboxField,
     SubmitButton,
     ActionButton,
     ErrorMessage,
@@ -64,11 +63,6 @@ def CreateTagPage(
                         placeholder="Enter tag description (optional)",
                         value=form_data.get("description", ""),
                         rows=3,
-                    ),
-                    CheckboxField(
-                        name="is_predefined",
-                        label="Mark as predefined tag",
-                        checked=form_data.get("is_predefined", False),
                     ),
                     Div(
                         SubmitButton("Create Tag"),

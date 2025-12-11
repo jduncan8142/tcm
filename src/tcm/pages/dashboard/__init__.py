@@ -10,7 +10,7 @@ from tcm.pages.components import (
 )
 
 
-def StatisticsWidget(title: str, count: int, icon: str = "", color: str = "blue"):
+def StatisticsWidget(title: str, count: int, icon: str = "", color: str = "blue", href: str = None):
     """
     Render a statistics widget showing a count and title.
 
@@ -19,20 +19,27 @@ def StatisticsWidget(title: str, count: int, icon: str = "", color: str = "blue"
         count: Numeric count to display
         icon: Optional icon character or emoji
         color: Color scheme (blue, green, orange, purple)
+        href: Optional URL to navigate to when clicked
 
     Returns:
         FastHTML div element with statistic display
     """
-    return Div(
+    inner_content = Div(
+        Span(icon, cls=f"stat-icon stat-icon-{color}") if icon else None,
         Div(
-            Span(icon, cls=f"stat-icon stat-icon-{color}") if icon else None,
-            Div(
-                Div(str(count), cls="stat-count"),
-                Div(title, cls="stat-title"),
-                cls="stat-content",
-            ),
-            cls="stat-inner",
+            Div(str(count), cls="stat-count"),
+            Div(title, cls="stat-title"),
+            cls="stat-content",
         ),
+        cls="stat-inner",
+    )
+
+    # Wrap in link if href is provided
+    if href:
+        inner_content = A(inner_content, href=href, cls="stat-widget-link")
+
+    return Div(
+        inner_content,
         cls=f"stat-widget stat-widget-{color}",
     )
 
@@ -215,18 +222,21 @@ def DashboardPage(
                     count=stats.get("testcases", 0),
                     icon="\U0001F4CB",  # 📋
                     color="blue",
+                    href="/testcases",
                 ),
                 StatisticsWidget(
                     title="Projects",
                     count=stats.get("projects", 0),
                     icon="\U0001F4C1",  # 📁
                     color="green",
+                    href="/projects",
                 ),
                 StatisticsWidget(
                     title="Tags",
                     count=stats.get("tags", 0),
                     icon="\U0001F3F7",  # 🏷
                     color="orange",
+                    href="/tags",
                 ),
                 cls="stats-grid",
             ),

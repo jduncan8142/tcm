@@ -43,7 +43,7 @@ def TagRow(tag: dict):
                     size="small",
                 ),
                 cls="action-buttons",
-            )
+            ) if not tag.get("is_predefined") else Span("System Tag", cls="system-tag-indicator")
         ),
         cls="tag-row",
     )

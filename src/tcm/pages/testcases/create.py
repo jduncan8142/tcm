@@ -181,7 +181,7 @@ def CreateTestCasePage(
                 ),
                 cls="form-card form-card-wide",
             ),
-            cls="container",
+            cls="container container-wide",
         ),
         title="Create Test Case - Test Case Management",
     )

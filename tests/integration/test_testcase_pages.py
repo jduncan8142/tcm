@@ -152,6 +152,8 @@ class TestCreateTestCasePage:
         assert b"Title" in response.content
         assert b"Steps" in response.content
         assert b"Expected Results" in response.content
+        # Verify form uses wide container layout
+        assert b"container-wide" in response.content
 
     async def test_create_testcase_success(self, test_client: AsyncClient, sample_tags):
         """Test creating a new test case successfully."""

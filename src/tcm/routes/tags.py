@@ -202,5 +202,9 @@ async def delete_tag(
     if not tag:
         raise HTTPException(status_code=404, detail=f"Tag with id {tag_id} not found")
 
+    # Check if tag is predefined (cannot be deleted)
+    if tag.is_predefined:
+        raise HTTPException(status_code=403, detail="Predefined tags cannot be deleted")
+
     await session.delete(tag)
     await session.commit()
